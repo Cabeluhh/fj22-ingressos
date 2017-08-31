@@ -1,5 +1,6 @@
 package br.com.caelum.ingresso.model;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
@@ -18,12 +19,14 @@ private LocalTime horario;
 private Sala sala;
 @ManyToOne
 private Filme filme;
+private BigDecimal preco;
 //construtor do hibernate
 public Sessao(){}
 	public Sessao (LocalTime horario, Filme filme, Sala sala){
 		this.horario = horario;
 		this.setFilme(filme);
 		this.sala = sala;
+		this.setPreco(sala.getPreco().add(filme.getPreco()));
 	}
 
 public Integer getId() {
@@ -59,5 +62,11 @@ public void setFilme(Filme filme) {
 }
 public LocalTime getHorarioTermino(){
 	return this.horario.plus(filme.getDuracao().toMinutes(), ChronoUnit.MINUTES);
+}
+public BigDecimal getPreco() {
+	return preco;
+}
+public void setPreco(BigDecimal preco) {
+	this.preco = preco;
 }
 }
