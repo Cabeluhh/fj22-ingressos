@@ -19,10 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Carrinho;
 import br.com.caelum.ingresso.model.DetalhesDoFilme;
 import br.com.caelum.ingresso.model.Lugar;
 import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.TipoDeIngresso;
 import br.com.caelum.ingresso.model.form.SessaoForm;
 import br.com.caelum.ingresso.rest.ImdbClient;
 import br.com.caelum.ingresso.validacao.GerenciadorDeSessao;
@@ -37,7 +39,9 @@ public class SessaoController {
 	private SessaoDao sessaoDao;
 	@Autowired
 	private ImdbClient client;
-
+	@Autowired
+	private Carrinho carrinho;
+	
 @GetMapping("/admin/sessao")	
 public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form){
 	ModelAndView modelAndView = new ModelAndView("sessao/sessao");
@@ -67,7 +71,9 @@ public ModelAndView salva(@Valid SessaoForm form, BindingResult result){
 		Sessao sessao = sessaoDao.findOne(sessaoId);
 		Optional <DetalhesDoFilme> detalhes = client.request(sessao.getFilme());
 		modelAndView.addObject("sessao", sessao);
+		modelAndView.addObject("carrinho", carrinho);
 		modelAndView.addObject("detalhesDoFilme", detalhes.orElse(new DetalhesDoFilme()));
+		modelAndView.addObject("tiposDeIngressos", TipoDeIngresso.values());
 		return modelAndView;
 }
 

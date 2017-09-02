@@ -9,5 +9,10 @@ public class DescontoDeTrintaPorCentoParaBancos implements Desconto {
 		// TODO Auto-generated method stub
 		return precoOriginal.subtract(precoOriginal.multiply(desconto));
 	}
+	@Override
+	public String getDescricao() {
+		// TODO Auto-generated method stub
+		return "Desconto Banco";
+	}
 
 }
